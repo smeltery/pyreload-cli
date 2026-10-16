@@ -61,3 +61,16 @@ website/build/
 website/.vercel/
 website/dist/
 website/public/og-image.svg
+
+# Shared tooling and local evidence
+node_modules/
+.website-studio/
+site/
+coverage.xml
+*.tsbuildinfo
+website/public/diagrams/
+website/public/og-image.png
+test-results/
+playwright-report/
+!website/app/lib/
+!website/app/lib/**

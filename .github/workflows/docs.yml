@@ -1,62 +1,39 @@
-name: Deploy Documentation
-
+name: Deploy website
 on:
   push:
-    branches: [ master, main ]
-    paths:
-      - 'docs/**'
-      - '.github/workflows/docs.yml'
+    branches: [master]
   workflow_dispatch:
-
 permissions:
   contents: read
   pages: write
   id-token: write
-
 concurrency:
-  group: "pages"
+  group: pages
   cancel-in-progress: false
-
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 25
     steps:
-    - uses: actions/checkout@v4
-
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.11'
-
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install mkdocs-material
-
-    - name: Copy shared assets
-      run: |
-        mkdir -p docs/src/assets
-        cp assets/og-image.svg docs/src/assets/og-image.svg
-
-    - name: Build documentation
-      run: |
-        cd docs
-        mkdocs build --config-file mkdocs.yml
-
-    - name: Upload artifact
-      uses: actions/upload-pages-artifact@v3
-      with:
-        path: 'site'
-
+      - uses: actions/checkout@v4
+      - uses: flox/install-flox-action@v2
+      - run: flox activate -- ./setup-dev.sh
+      - run: flox activate -- bunx playwright install-deps chromium
+      - name: Build website and documentation
+        env:
+          NEXT_PUBLIC_BASE_PATH: /pyreload-cli
+          SITE_URL: https://smeltery.github.io/pyreload-cli
+        run: flox activate -- bun run --cwd website build
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: website/out
   deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
-    needs: build
     steps:
-    - name: Deploy to GitHub Pages
-      id: deployment
-      uses: actions/deploy-pages@v4
+      - uses: actions/deploy-pages@v4
+        id: deployment

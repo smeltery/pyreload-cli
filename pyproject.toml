@@ -10,7 +10,7 @@ readme = "README.md"
 requires-python = ">=3.8"
 license = {text = "PolyForm-Shield-1.0.0"}
 authors = [
-    {name = "dotbrains", email = "nicholas.adamou@outlook.com"}
+    {name = "smeltery", email = "nicholas.adamou@outlook.com"}
 ]
 keywords = [
     "development",
@@ -26,7 +26,6 @@ keywords = [
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
-    "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.8",
@@ -47,16 +46,17 @@ dependencies = [
 dev = [
     "pytest>=7.0.0",
     "pytest-cov>=4.0.0",
-    "black>=23.0.0",
-    "ruff>=0.1.0",
-    "pre-commit>=3.0.0",
+    "ruff==0.11.13",
+    "pre-commit==4.2.0",
+    "build==1.2.2.post1",
+    "twine==6.1.0",
 ]
 
 [project.urls]
-Homepage = "https://github.com/dotbrains/pyreload-cli"
-Documentation = "https://dotbrains.github.io/pyreload-cli"
-Repository = "https://github.com/dotbrains/pyreload-cli"
-"Bug Reports" = "https://github.com/dotbrains/pyreload-cli/issues"
+Homepage = "https://github.com/smeltery/pyreload-cli"
+Documentation = "https://smeltery.github.io/pyreload-cli"
+Repository = "https://github.com/smeltery/pyreload-cli"
+"Bug Reports" = "https://github.com/smeltery/pyreload-cli/issues"
 
 [project.scripts]
 pyreload = "pyreload.main:main"
@@ -69,14 +69,11 @@ testpaths = ["tests"]
 python_files = ["test_*.py"]
 python_classes = ["Test*"]
 python_functions = ["test_*"]
-addopts = "-v --cov=pyreload --cov-report=term-missing"
-
-[tool.black]
-line-length = 100
-target-version = ["py38", "py39", "py310", "py311", "py312"]
+addopts = "-v --cov=pyreload --cov-report=term-missing --cov-fail-under=80"
 
 [tool.ruff]
 line-length = 100
 target-version = "py38"
+
+[tool.ruff.lint]
 select = ["E", "F", "W", "I", "N", "UP", "B", "A", "C4", "SIM"]
-ignore = []

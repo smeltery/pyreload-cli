@@ -1,0 +1,57 @@
+name: ci
+on:
+  push:
+    branches: [master, main, develop]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: flox/install-flox-action@v2
+      - name: Install locked development environment
+        run: flox activate -- ./setup-dev.sh
+      - name: Install browser dependencies
+        run: flox activate -- bunx playwright install-deps chromium
+      - name: Shared commit checks
+        run: flox activate -- pre-commit run --all-files
+      - name: Build and verify package
+        run: flox activate -- bash scripts/check-package.sh
+      - name: Build website and diagrams
+        run: flox activate -- bun run --cwd website build
+      - name: Install browser
+        run: flox activate -- bunx playwright install --with-deps chromium
+      - name: Browser journeys, links and accessibility
+        run: flox activate -- bunx playwright test
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: browser-report
+          path: test-results/
+  test:
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        python: ['3.8', '3.10', '3.12', '3.14']
+        include:
+          - os: macos-latest
+            python: '3.12'
+          - os: windows-latest
+            python: '3.12'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: python -m pip install -e . pytest pytest-cov
+      - run: pytest --cov-fail-under=80

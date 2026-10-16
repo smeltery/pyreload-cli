@@ -1,0 +1,18 @@
+{
+  "globs": [
+    "*.md",
+    "docs/README.md",
+    "docs/src/**/*.md",
+    "assets/*.md",
+    "website/*.md",
+  ],
+  "config": {
+    "default": true,
+    "MD013": false,
+    "MD033": false,
+    "MD041": false,
+    "MD024": {
+      "siblings_only": true,
+    },
+  },
+}

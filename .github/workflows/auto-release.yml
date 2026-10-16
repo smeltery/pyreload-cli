@@ -1,0 +1,49 @@
+name: auto-release
+on:
+  workflow_run:
+    workflows: [ci]
+    branches: [master]
+    types: [completed]
+permissions:
+  actions: write
+  contents: write
+concurrency:
+  group: auto-release-master
+  cancel-in-progress: false
+jobs:
+  cut-release:
+    if: github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.workflow_run.head_sha }}
+      - name: Tag the tested revision
+        id: version
+        env:
+          TESTED_SHA: ${{ github.event.workflow_run.head_sha }}
+        run: |
+          set -euo pipefail
+          git fetch origin master --tags
+          if [ "$(git rev-parse origin/master)" != "$TESTED_SHA" ]; then
+            echo 'A newer commit exists; wait for its CI run.'
+            exit 0
+          fi
+          tag="$(git tag --points-at "$TESTED_SHA" | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | sort -V | tail -1 || true)"
+          if [ -z "$tag" ]; then
+            latest="$(git tag --list | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | sort -V | tail -1 || true)"
+            if [ -z "$latest" ]; then latest="v$(python -c 'import tomllib; print(tomllib.load(open("pyproject.toml", "rb"))["project"]["version"])')"; fi
+            version="${latest#v}"
+            tag="v${version%.*}.$((${version##*.} + 1))"
+            git tag "$tag" "$TESTED_SHA"
+            git push origin "$tag"
+          fi
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+      - name: Dispatch release (also recovers interrupted releases)
+        if: steps.version.outputs.tag != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ steps.version.outputs.tag }}
+        run: gh workflow run release.yml --ref master -f tag="$RELEASE_TAG"

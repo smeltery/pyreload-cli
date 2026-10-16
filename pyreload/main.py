@@ -89,7 +89,7 @@ Examples:
   pyreload app.py --debug                  # Show file change events
   pyreload app.py --clean                  # Quiet mode
 
-For more information, visit: https://github.com/dotbrains/pyreload
+For more information, visit: https://github.com/smeltery/pyreload-cli
         """,
     )
 

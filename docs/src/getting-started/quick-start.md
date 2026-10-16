@@ -1,42 +1,32 @@
-# Quick Start
+# Quick start
 
-Get started with Pyreload in minutes.
+Create an application and run it under Pyreload.
 
-## Basic Command
+## Create an application
 
-The simplest way to use Pyreload:
+Save this as `app.py`:
 
-```bash
-pyreload myapp.py
+```python
+import time
+
+while True:
+    print("Hello from Pyreload", flush=True)
+    time.sleep(2)
 ```
 
-This will:
-- Watch the current directory for changes
-- Restart `myapp.py` whenever a `.py` file changes
-- Show restart notifications
-
-## Common Options
-
-### Watch Specific Files
+## Start watching
 
 ```bash
-pyreload -w "*.py" -w "config/*.yaml" myapp.py
+pyreload app.py
 ```
 
-### Ignore Patterns
+Edit the printed message and save. Pyreload stops the running process and starts it again.
+By default it watches `*.py` recursively from the current directory.
 
-```bash
-pyreload -i "tests/*" -i "__pycache__/*" myapp.py
-```
+## Control the process
 
-### Pass Arguments to Your Script
+Type `rs` and press Enter to restart manually. Type `stop` and press Enter to stop
+both the watcher and application, or use Ctrl+C.
 
-```bash
-pyreload myapp.py -- --port 8000 --debug
-```
-
-## Next Steps
-
-- Learn about [Watch Patterns](../user-guide/watch-patterns.md)
-- Explore [Config Files](../user-guide/config-files.md)
-- Check out [Use Cases](../use-cases/docker.md)
+For a mounted folder, use `pyreload app.py --polling`.
+See [basic usage](basic-usage.md) for more options.
