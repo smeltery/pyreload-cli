@@ -56,7 +56,9 @@ test('all routes, local links, fragments and images resolve', async ({
       route,
     ).toBeTruthy();
   }
-  expect((await request.get('/not-a-real-page/')).status()).toBe(404);
+  const missing = await request.get('/not-a-real-page/');
+  expect(missing.status()).toBe(404);
+  expect(await missing.text()).toContain('Back to a fresh start.');
 });
 
 test('search handles matches, no results, reset and Escape', async ({
@@ -144,3 +146,21 @@ for (const route of ['/', '/docs/', '/docs/api/cli-reference/', '/brand/']) {
     expect(results.violations).toEqual([]);
   });
 }
+
+test('clipboard denial gives visible recovery instructions', async ({
+  page,
+}) => {
+  await page.goto('/');
+  await page.evaluate(() =>
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: { writeText: () => Promise.reject(new Error('Clipboard denied')) },
+    }),
+  );
+  await page.getByRole('button', { name: 'Copy command' }).first().click();
+  await expect(
+    page
+      .getByRole('status')
+      .filter({ hasText: 'Copy unavailable. Select the text to copy.' }),
+  ).toBeVisible();
+});

@@ -24,7 +24,12 @@ export function CopyButton({
         {status === 'Copied' ? <Check size={16} /> : <Copy size={16} />}
         <span>{label}</span>
       </button>
-      <span className="sr-only" role="status">
+      <span
+        className={
+          status.startsWith('Copy unavailable') ? 'copy-toast' : 'sr-only'
+        }
+        role="status"
+      >
         {status}
       </span>
     </>
