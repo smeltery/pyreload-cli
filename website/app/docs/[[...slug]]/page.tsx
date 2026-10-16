@@ -21,6 +21,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       title: `${doc.title} · Pyreload`,
       description: doc.description,
+      images: [`${siteURL}/og-image.png`],
     },
   };
 }

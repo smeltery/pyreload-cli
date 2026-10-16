@@ -1,8 +1,13 @@
 import { Navigation } from '../components/Navigation';
 import { Footer } from '../components/Footer';
-import { href } from '../lib/paths';
+import { href, siteURL } from '../lib/paths';
 export const metadata = {
   title: 'Brand & assets',
+  alternates: { canonical: `${siteURL}/brand/` },
+  openGraph: {
+    title: 'Brand & assets · Pyreload',
+    images: [`${siteURL}/og-image.png`],
+  },
   description: 'Pyreload logos, social preview, and asset credits.',
 };
 export default function BrandPage() {

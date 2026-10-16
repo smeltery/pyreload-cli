@@ -2,7 +2,9 @@ import { Code2, FolderSync, SlidersHorizontal } from 'lucide-react';
 import { Navigation } from './components/Navigation';
 import { Footer } from './components/Footer';
 import { CopyButton } from './components/CopyButton';
-import { href } from './lib/paths';
+import { href, siteURL } from './lib/paths';
+
+export const metadata = { alternates: { canonical: `${siteURL}/` } };
 
 export default function HomePage() {
   return (
