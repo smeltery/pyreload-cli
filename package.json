@@ -2,16 +2,22 @@
   "name": "pyreload-checks",
   "private": true,
   "scripts": {
-    "markdown": "markdownlint-cli2",
+    "markdown": "node scripts/check-markdown.mjs",
     "diagrams": "node scripts/check-diagrams.mjs",
     "format": "prettier --check .",
-    "format:fix": "prettier --write ."
+    "format:fix": "prettier --write .",
+    "diagrams:update": "node scripts/check-diagrams.mjs --write",
+    "audit": "bun audit && bun run --cwd website audit"
   },
   "devDependencies": {
-    "@mermaid-js/mermaid-cli": "11.12.0",
-    "markdownlint-cli2": "0.18.1",
+    "@mermaid-js/mermaid-cli": "12.0.0",
     "prettier": "3.6.2",
     "@playwright/test": "1.56.1",
-    "@axe-core/playwright": "4.10.2"
+    "@axe-core/playwright": "4.10.2",
+    "puppeteer": "25.14.0",
+    "markdownlint": "0.41.1"
+  },
+  "overrides": {
+    "katex": "0.18.11"
   }
 }

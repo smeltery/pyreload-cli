@@ -14,3 +14,4 @@ website/next-env.d.ts
 requirements-dev.lock
 test-results
 playwright-report
+assets/diagrams/

@@ -1,12 +1,10 @@
-import { chromium } from '@playwright/test';
 import { createHash } from 'node:crypto';
-import { execFileSync } from 'node:child_process';
 import {
   mkdirSync,
   readdirSync,
   readFileSync,
-  writeFileSync,
   copyFileSync,
+  existsSync,
 } from 'node:fs';
 import { join, resolve } from 'node:path';
 
@@ -16,41 +14,28 @@ mkdirSync(join(output, 'diagrams'), { recursive: true });
 for (const name of ['logo.svg', 'og-image.png'])
   copyFileSync(join(root, 'assets', name), join(output, name));
 copyFileSync(join(root, 'assets/logo.svg'), join(output, 'favicon.svg'));
-function render(directory: string) {
+function copyDiagrams(directory: string) {
   for (const file of readdirSync(directory, { withFileTypes: true })) {
     const path = join(directory, file.name);
     if (file.isDirectory()) {
-      render(path);
+      copyDiagrams(path);
       continue;
     }
     if (!file.name.endsWith('.md')) continue;
     for (const match of readFileSync(path, 'utf8').matchAll(
       /```mermaid\s*\n([\s\S]*?)```/g,
     )) {
-      const source = match[1];
       const hash = createHash('sha256')
-        .update(source)
+        .update(match[1])
         .digest('hex')
         .slice(0, 12);
-      const target = join(output, 'diagrams', `${hash}.svg`);
-      const temp = join(root, '.website-studio', 'diagrams');
-      mkdirSync(temp, { recursive: true });
-      const input = join(temp, `${hash}.mmd`);
-      const config = join(temp, 'puppeteer.json');
-      writeFileSync(input, source);
-      writeFileSync(
-        config,
-        JSON.stringify({
-          executablePath: chromium.executablePath(),
-          args: ['--no-sandbox'],
-        }),
-      );
-      execFileSync(
-        join(root, 'node_modules/.bin/mmdc'),
-        ['-i', input, '-o', target, '-b', 'transparent', '-p', config],
-        { stdio: 'inherit' },
-      );
+      const asset = join(root, 'assets/diagrams', `${hash}.svg`);
+      if (!existsSync(asset))
+        throw new Error(
+          `Diagram in ${path} changed. Run bun run diagrams:update from the repository root.`,
+        );
+      copyFileSync(asset, join(output, 'diagrams', `${hash}.svg`));
     }
   }
 }
-render(join(root, 'docs/src'));
+copyDiagrams(join(root, 'docs/src'));

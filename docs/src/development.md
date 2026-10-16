@@ -24,7 +24,7 @@ bun run build
 Commit hooks run Ruff lint/format, Markdown lint, Prettier, rendered Mermaid
 validation, local Markdown link checks, LOC budgets, actionlint, and TypeScript.
 Pre-push hooks additionally run Python tests, the production website build,
-browser journeys and accessibility checks, and package validation. CI runs the
+browser journeys and accessibility checks, dependency audits, and package validation. CI runs the
 same commands plus a cross-platform Python matrix.
 
 ## Website
@@ -34,7 +34,10 @@ flox activate --start-services
 ```
 
 The website service runs on port 3014. Markdown in `docs/src/` is the single
-source for the website's documentation. `cd website && bun run build` exports
+source for the website's documentation. After editing a Mermaid block, run
+`bun run diagrams:update` at the repository root and commit the generated SVG
+with the Markdown. Builds require the matching source hash, so stale diagrams
+fail explicitly. CI renders every diagram; hosting builds need only Bun. `cd website && bun run build` exports
 all routes to `website/out/`. `bun run preview` serves that production output.
 
 ## Size budgets

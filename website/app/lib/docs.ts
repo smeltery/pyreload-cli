@@ -49,7 +49,7 @@ export function readDoc(slug: string) {
     return `<figure class="doc-diagram"><img src="${href(`/diagrams/${hash}.svg`)}" alt="${renderer.utils.escapeHtml(title)} workflow diagram" /><details><summary>Diagram source</summary><pre>${renderer.utils.escapeHtml(source)}</pre></details></figure>`;
   };
   renderer.renderer.rules.link_open = (tokens, index, options, env, self) => {
-    const url = tokens[index].attrGet('href') || '';
+    const url = String(tokens[index].attrGet('href') || '');
     if (!/^(?:[a-z]+:|#|\/)/i.test(url)) {
       const [relative, fragment] = url.split('#');
       const target = path.posix

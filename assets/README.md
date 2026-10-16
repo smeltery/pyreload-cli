@@ -2,6 +2,7 @@
 
 - `logo.svg`: original Pyreload restart-loop mark.
 - `og-image.svg`: editable 1200 × 630 social artwork.
+- `diagrams/`: generated Mermaid SVGs, updated with `bun run diagrams:update`.
 - `og-image.png`: social preview used by the website and README.
 
 Website builds copy these files to `website/public/`. Technology marks belong to

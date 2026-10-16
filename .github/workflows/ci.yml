@@ -22,6 +22,8 @@ jobs:
         run: flox activate -- bunx playwright install-deps chromium
       - name: Shared commit checks
         run: flox activate -- pre-commit run --all-files
+      - name: Audit dependencies
+        run: flox activate -- bun run audit
       - name: Build and verify package
         run: flox activate -- bash scripts/check-package.sh
       - name: Build website and diagrams
