@@ -18,15 +18,16 @@ export default function BrandPage() {
         <p className="eyebrow">Made for the loop</p>
         <h1>Brand & assets.</h1>
         <p>
-          The Pyreload mark is a simple restart loop, drawn for small spaces.
-          Use the original files when linking to the project.
+          The Pyreload mark curls a Python-inspired snake into a restart loop,
+          drawn for small spaces. Use the original files when linking to the
+          project.
         </p>
         <h2>Logo</h2>
         <img
           src={href('/logo.svg')}
           width="100"
           height="100"
-          alt="Pyreload restart loop logo"
+          alt="Pyreload snake restart loop logo"
         />
         <p>
           <a download href={href('/logo.svg')}>
