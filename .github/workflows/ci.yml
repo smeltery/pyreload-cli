@@ -32,7 +32,7 @@ jobs:
         run: flox activate -- bunx playwright install --with-deps chromium
       - name: Browser journeys, links and accessibility
         run: flox activate -- bunx playwright test
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: failure()
         with:
           name: browser-report
