@@ -70,7 +70,7 @@ textarea:focus-visible,
   outline-offset: 2px;
 }
 ::selection {
-  color: var(--ink);
+  color: #292b25;
   background: #d5dfc7;
 }
 h1,
