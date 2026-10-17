@@ -279,8 +279,9 @@ export default function BrandPage() {
             Original Pyreload logo and social artwork. Interface icons by{' '}
             <a href="https://lucide.dev/license">Lucide (ISC)</a>. Technology
             logos from <a href="https://simpleicons.org/">Simple Icons (CC0)</a>
-            ; trademarks belong to their respective owners. Flox artwork comes
-            from the Flox project.
+            ; trademarks belong to their respective owners. Chat provider marks
+            follow the convt documentation menu and identify their respective
+            services. Flox artwork comes from the Flox project.
           </p>
           <p>
             DM Sans, Geist, and IBM Plex Mono are self-hosted under their SIL

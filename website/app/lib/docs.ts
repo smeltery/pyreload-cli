@@ -3,6 +3,7 @@ import path from 'node:path';
 import { createHash } from 'node:crypto';
 import MarkdownIt from 'markdown-it';
 import anchor from 'markdown-it-anchor';
+import { highlight } from './highlight';
 import { href } from './paths';
 
 const root = path.resolve(process.cwd(), '../docs/src');
@@ -37,7 +38,11 @@ export function readDoc(slug: string) {
     text: match[1],
     id: slugify(match[1]),
   }));
-  const renderer = new MarkdownIt({ html: false, linkify: true }).use(anchor, {
+  const renderer = new MarkdownIt({
+    html: false,
+    linkify: true,
+    highlight,
+  }).use(anchor, {
     slugify,
   });
   const fence = renderer.renderer.rules.fence!;
