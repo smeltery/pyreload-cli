@@ -49,6 +49,6 @@ const startingPoints = [
   '/docs/user-guide/polling-mode/',
   '/docs/use-cases/docker/',
 ];
-export const suggestedEntries = startingPoints.map(
-  (url) => searchEntries.find((entry) => entry.url === url)!,
+export const suggestedEntries = startingPoints.map((url) =>
+  searchEntries.find((entry) => entry.url === url)!,
 );

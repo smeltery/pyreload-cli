@@ -28,9 +28,8 @@ test('all routes, local links, fragments and images resolve', async ({
       .locator('a[href], img[src]')
       .evaluateAll((nodes) =>
         nodes
-          .map(
-            (node) =>
-              node.getAttribute(node.tagName === 'IMG' ? 'src' : 'href')!,
+          .map((node) =>
+            node.getAttribute(node.tagName === 'IMG' ? 'src' : 'href')!,
           )
           .filter((url) => url.startsWith('/') || url.startsWith('#')),
       );

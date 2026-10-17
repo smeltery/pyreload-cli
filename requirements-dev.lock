@@ -71,7 +71,7 @@ pluggy==1.7.0
     # via
     #   pytest
     #   pytest-cov
-pre-commit==4.2.0
+pre-commit==4.6.2
     # via pyreload-cli (pyproject.toml)
 pycparser==3.11 ; implementation_name != 'PyPy' and platform_machine != 'ppc64le' and platform_machine != 's390x' and platform_python_implementation != 'PyPy' and sys_platform == 'linux'
     # via cffi
@@ -110,7 +110,7 @@ ruff==0.11.13
     # via pyreload-cli (pyproject.toml)
 secretstorage==3.5.0 ; platform_machine != 'ppc64le' and platform_machine != 's390x' and sys_platform == 'linux'
     # via keyring
-twine==6.1.0
+twine==7.0.0
     # via pyreload-cli (pyproject.toml)
 urllib3==2.8.0
     # via
