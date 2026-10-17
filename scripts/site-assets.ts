@@ -11,7 +11,13 @@ import { join, resolve } from 'node:path';
 const root = resolve(import.meta.dir, '..');
 const output = join(root, 'website/public');
 mkdirSync(join(output, 'diagrams'), { recursive: true });
-for (const name of ['logo.svg', 'og-image.png'])
+for (const name of [
+  'logo.svg',
+  'logo-mark.svg',
+  'logo-dark.svg',
+  'og-image.png',
+  'og-image.svg',
+])
   copyFileSync(join(root, 'assets', name), join(output, name));
 copyFileSync(join(root, 'assets/logo.svg'), join(output, 'favicon.svg'));
 function copyDiagrams(directory: string) {
