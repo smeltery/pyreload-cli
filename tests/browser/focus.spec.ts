@@ -26,7 +26,7 @@ test('search focuses the rounded field and preserves visible keyboard navigation
         })),
       ).toEqual({ outline: '2px', radius: '12px' });
       await input.fill('polling');
-      await page.keyboard.press('Tab');
+      await page.keyboard.press('ArrowDown');
       const result = dialog.getByRole('link', { name: /Polling/ });
       await expect(result).toBeFocused();
       expect(
@@ -66,4 +66,36 @@ test('text selection stays readable in both documentation themes and highlighted
       });
     }
   }
+});
+
+test('search filters rich results and opens keyboard-selected pages', async ({
+  page,
+}) => {
+  await page.goto('/');
+  await page
+    .getByRole('button', { name: 'Search documentation' })
+    .first()
+    .click();
+  const dialog = page.getByRole('dialog', { name: 'Find your next step.' });
+  const results = dialog.getByRole('navigation', { name: 'Search results' });
+  await expect(results.getByRole('link')).toHaveCount(6);
+  await expect(results.getByRole('link').first()).toContainText(
+    'Brand & assets',
+  );
+  await dialog.getByRole('button', { name: 'Reference', exact: true }).click();
+  await expect(results.getByRole('link')).toHaveCount(3);
+  await dialog.getByRole('searchbox').fill('flags');
+  await expect(results.getByRole('link')).toHaveCount(1);
+  await expect(results).toContainText('CLI reference');
+  await dialog.getByRole('button', { name: 'Clear search' }).click();
+  await expect(dialog.getByRole('searchbox')).toBeFocused();
+  await expect(
+    dialog.getByRole('button', { name: 'Reference', exact: true }),
+  ).toHaveAttribute('aria-pressed', 'true');
+  await dialog.getByRole('searchbox').fill('configuration');
+  await page.keyboard.press('ArrowDown');
+  await expect(results.getByRole('link').first()).toBeFocused();
+  await page.keyboard.press('ArrowDown');
+  await page.keyboard.press('Enter');
+  await expect(page).toHaveURL(/\/docs\/api\/config-reference\//);
 });
