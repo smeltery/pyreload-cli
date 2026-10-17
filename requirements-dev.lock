@@ -106,7 +106,7 @@ rfc3986==2.0.0
     # via twine
 rich==15.0.0
     # via twine
-ruff==0.11.13
+ruff==0.17.0
     # via pyreload-cli (pyproject.toml)
 secretstorage==3.5.0 ; platform_machine != 'ppc64le' and platform_machine != 's390x' and sys_platform == 'linux'
     # via keyring
