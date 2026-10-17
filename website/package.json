@@ -24,7 +24,7 @@
     "react-dom": "19.3.1"
   },
   "devDependencies": {
-    "@types/node": "22.19.0",
+    "@types/node": "26.6.5",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
     "@types/markdown-it": "14.2.0",
