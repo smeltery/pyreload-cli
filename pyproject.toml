@@ -48,7 +48,7 @@ dev = [
     "pytest-cov>=4.0.0",
     "ruff==0.17.0",
     "pre-commit==4.6.2",
-    "build==1.2.2.post1",
+    "build==1.6.1",
     "twine==7.0.0",
 ]
 
