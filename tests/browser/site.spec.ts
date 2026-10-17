@@ -164,3 +164,42 @@ test('clipboard denial gives visible recovery instructions', async ({
       .filter({ hasText: 'Copy unavailable. Select the text to copy.' }),
   ).toBeVisible();
 });
+
+test('docs chat popover matches the reference and supports keyboard dismissal', async ({
+  page,
+  request,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.goto('/docs/api/');
+  const trigger = page.locator('.chat-links summary');
+  await trigger.click();
+  const menu = page.locator('.chat-menu');
+  await expect(menu).toBeVisible();
+  await expect(menu.getByRole('link')).toHaveCount(6);
+  expect((await menu.boundingBox())?.width).toBe(224);
+  for (const provider of ['v0', 'chatgpt', 'claude', 't3', 'scira', 'cursor']) {
+    expect((await request.get(`/chat/${provider}.svg`)).status()).toBe(200);
+  }
+  const chat = menu.getByRole('link', { name: 'Open in ChatGPT' });
+  expect(
+    new URL((await chat.getAttribute('href'))!).searchParams.get('prompt'),
+  ).toContain('http://127.0.0.1:3015/docs/api/');
+  await trigger.press('Tab');
+  await expect(menu.getByRole('link', { name: 'Open in v0' })).toBeFocused();
+  await page.keyboard.press('Escape');
+  await expect(menu).not.toBeVisible();
+  await expect(trigger).toBeFocused();
+  await trigger.click();
+  await page.locator('h1').click();
+  await expect(menu).not.toBeVisible();
+  await page.getByRole('button', { name: 'Toggle theme' }).click();
+  await trigger.click();
+  const results = await new AxeBuilder({ page })
+    .withTags(['wcag2a', 'wcag2aa', 'wcag21aa'])
+    .analyze();
+  expect(results.violations).toEqual([]);
+  await page.locator('.docs-toc a[href="#configuration"]').click();
+  await expect(
+    page.locator('.docs-toc a[href="#configuration"]'),
+  ).toHaveAttribute('aria-current', 'location');
+});

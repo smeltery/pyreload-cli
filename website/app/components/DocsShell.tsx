@@ -1,11 +1,11 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
-import { Menu, Moon, Sun, X, ArrowUp } from 'lucide-react';
+import { Menu, Moon, Sun, X } from 'lucide-react';
 import { Brand } from './Brand';
 import { Search } from './Search';
-import { CopyButton } from './CopyButton';
+import { DocsActions } from './DocsActions';
 import { groups } from '../lib/navigation';
-import { href, siteURL } from '../lib/paths';
+import { href } from '../lib/paths';
 
 export function DocsShell({
   slug,
@@ -19,6 +19,23 @@ export function DocsShell({
   children: React.ReactNode;
 }) {
   const [theme, setTheme] = useState('dark');
+  const [activeHeading, setActiveHeading] = useState('');
+  useEffect(() => {
+    function updateHeading() {
+      let current = headings[0]?.id || '';
+      for (const heading of headings) {
+        if (
+          (document.getElementById(heading.id)?.getBoundingClientRect().top ??
+            Infinity) <= 120
+        )
+          current = heading.id;
+      }
+      setActiveHeading(current);
+    }
+    updateHeading();
+    window.addEventListener('scroll', updateHeading, { passive: true });
+    return () => window.removeEventListener('scroll', updateHeading);
+  }, [headings]);
   const drawer = useRef<HTMLDialogElement>(null);
   useEffect(() => {
     try {
@@ -55,17 +72,6 @@ export function DocsShell({
         },
       ]
     : groups;
-  const prompt = encodeURIComponent(
-    `Read ${siteURL}/docs/${slug ? `${slug}/` : ''} so I can ask questions about it.`,
-  );
-  const chatLinks = [
-    ['v0', `https://v0.app/?q=${prompt}`],
-    ['ChatGPT', `https://chatgpt.com/?hints=search&prompt=${prompt}`],
-    ['Claude', `https://claude.ai/new?q=${prompt}`],
-    ['T3 Chat', `https://t3.chat/new?q=${prompt}`],
-    ['Scira', `https://scira.ai/?q=${prompt}`],
-    ['Cursor', `https://cursor.com/link/prompt?text=${prompt}`],
-  ];
   const sidebar = (
     <nav className="docs-sidebar" aria-label="Documentation">
       <a
@@ -157,40 +163,15 @@ export function DocsShell({
       <aside className="docs-toc" aria-label="On this page">
         <h2>On this page</h2>
         {headings.map((heading) => (
-          <a key={heading.id} href={`#${heading.id}`}>
+          <a
+            key={heading.id}
+            href={`#${heading.id}`}
+            aria-current={activeHeading === heading.id ? 'location' : undefined}
+          >
             {heading.text}
           </a>
         ))}
-        <div className="toc-actions">
-          <button
-            onClick={() =>
-              window.scrollTo({
-                top: 0,
-                behavior: window.matchMedia('(prefers-reduced-motion: reduce)')
-                  .matches
-                  ? 'instant'
-                  : 'smooth',
-              })
-            }
-          >
-            <ArrowUp size={15} />
-            Scroll to top
-          </button>
-          <CopyButton text={markdown} label="Copy as Markdown" />
-          <details className="chat-links">
-            <summary>Open in chat</summary>
-            {chatLinks.map(([name, url]) => (
-              <a
-                key={name}
-                href={url}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {name}
-              </a>
-            ))}
-          </details>
-        </div>
+        <DocsActions markdown={markdown} slug={slug} />
       </aside>
     </div>
   );
