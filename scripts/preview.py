@@ -24,5 +24,11 @@ class PreviewHandler(SimpleHTTPRequestHandler):
             self.wfile.write(content)
 
 
+class PreviewServer(ThreadingHTTPServer):
+    """Accept parallel browser asset requests without dropping connections."""
+
+    request_queue_size = 128
+
+
 handler = partial(PreviewHandler, directory=str(root))
-ThreadingHTTPServer(("127.0.0.1", int(os.environ.get("PORT", "3014"))), handler).serve_forever()
+PreviewServer(("127.0.0.1", int(os.environ.get("PORT", "3014"))), handler).serve_forever()
