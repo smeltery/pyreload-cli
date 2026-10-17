@@ -35,7 +35,7 @@ jobs:
           git merge-base --is-ancestor HEAD origin/master
           count="$(gh run list --workflow ci.yml --commit "$(git rev-parse HEAD)" --event push --status success --json databaseId --jq length)"
           test "$count" -gt 0
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
       - name: Set build version from tag

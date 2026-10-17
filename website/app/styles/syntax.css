@@ -1,0 +1,47 @@
+:root,
+.docs-shell[data-theme='light'] {
+  --syntax-keyword: #75445d;
+  --syntax-string: #426332;
+  --syntax-number: #88571d;
+  --syntax-name: #285f70;
+  --syntax-comment: #666c60;
+}
+.docs-shell[data-theme='dark'],
+.terminal,
+.recipe-code {
+  --syntax-keyword: #d9afcb;
+  --syntax-string: #b7d99e;
+  --syntax-number: #e4c58e;
+  --syntax-name: #a5cfd5;
+  --syntax-comment: #aab3a3;
+}
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-literal {
+  color: var(--syntax-keyword);
+}
+.hljs-string,
+.hljs-regexp {
+  color: var(--syntax-string);
+}
+.hljs-number,
+.hljs-symbol {
+  color: var(--syntax-number);
+}
+.hljs-title,
+.hljs-built_in,
+.hljs-attr,
+.hljs-variable,
+.hljs-attribute {
+  color: var(--syntax-name);
+}
+.hljs-comment,
+.hljs-meta {
+  color: var(--syntax-comment);
+}
+.syntax-code {
+  font-family: var(--mono);
+}
+.terminal-body code {
+  font-size: inherit;
+}

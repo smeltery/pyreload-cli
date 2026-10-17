@@ -32,7 +32,7 @@ jobs:
         run: flox activate -- bunx playwright install --with-deps chromium
       - name: Browser journeys, links and accessibility
         run: flox activate -- bunx playwright test
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: failure()
         with:
           name: browser-report
@@ -52,7 +52,7 @@ jobs:
             python: '3.12'
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: ${{ matrix.python }}
       - run: python -m pip install -e . pytest pytest-cov
