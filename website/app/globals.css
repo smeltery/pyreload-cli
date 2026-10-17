@@ -4,7 +4,9 @@
 @import './styles/base.css';
 @import './styles/mobile.css';
 @import './styles/home.css';
+@import './styles/home-details.css';
 @import './styles/controls.css';
 @import './styles/docs.css';
 @import './styles/docs-actions.css';
+@import './styles/syntax.css';
 @import './styles/responsive.css';
