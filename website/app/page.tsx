@@ -1,6 +1,10 @@
+import { highlight } from './lib/highlight';
+import { recipes } from './lib/recipes';
 import { Code2, FolderSync, SlidersHorizontal } from 'lucide-react';
 import { Navigation } from './components/Navigation';
 import { Footer } from './components/Footer';
+import { CommandRecipes } from './components/CommandRecipes';
+import { WatchConfiguration, HomeFAQ } from './components/HomeDetails';
 import { CopyButton } from './components/CopyButton';
 import { href, siteURL } from './lib/paths';
 
@@ -55,13 +59,25 @@ export default function HomePage() {
               </div>
               <div className="terminal-body">
                 <p>
-                  <b>$</b> pip install pyreload-cli
+                  <b>$</b>{' '}
+                  <code
+                    className="syntax-code"
+                    dangerouslySetInnerHTML={{
+                      __html: highlight('pip install pyreload-cli', 'bash'),
+                    }}
+                  />
                 </p>
                 <p className="terminal-muted">
                   Successfully installed pyreload-cli
                 </p>
                 <p>
-                  <b>$</b> pyreload app.py
+                  <b>$</b>{' '}
+                  <code
+                    className="syntax-code"
+                    dangerouslySetInnerHTML={{
+                      __html: highlight('pyreload app.py', 'bash'),
+                    }}
+                  />
                 </p>
                 <p className="terminal-muted">Watching for changes in *.py</p>
                 <p className="terminal-output">Hello, world.</p>
@@ -155,6 +171,11 @@ export default function HomePage() {
             </li>
           </ol>
         </section>
+        <CommandRecipes
+          highlighted={recipes.map((recipe) =>
+            highlight(recipe.command, 'bash'),
+          )}
+        />
         <section className="capabilities">
           <div className="wrap">
             <p className="eyebrow">Small tool. Useful details.</p>
@@ -195,6 +216,8 @@ export default function HomePage() {
             </div>
           </div>
         </section>
+        <WatchConfiguration />
+        <HomeFAQ />
         <section className="wrap start-section">
           <p className="eyebrow">Your next save is the start</p>
           <h2>

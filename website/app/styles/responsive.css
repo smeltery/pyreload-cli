@@ -146,15 +146,15 @@
     padding-inline: 16px;
     height: 60px;
   }
-  .docs-header nav {
+  .docs-header > nav {
     position: static;
     transform: none;
     font-size: 12px;
   }
-  .docs-header nav a {
+  .docs-header > nav a {
     padding-inline: 6px;
   }
-  .docs-header nav a:last-child {
+  .docs-header > nav a:last-child {
     display: none;
   }
   .docs-header .brand > span {
