@@ -42,18 +42,18 @@
   width: 24px;
   height: 24px;
 }
-.docs-header nav {
+.docs-header > nav {
   display: flex;
   gap: 4px;
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
 }
-.docs-header nav a {
+.docs-header > nav a {
   padding: 6px 12px;
   color: var(--muted);
 }
-.docs-header nav a[aria-current] {
+.docs-header > nav a[aria-current] {
   color: var(--ink);
 }
 .docs-controls {

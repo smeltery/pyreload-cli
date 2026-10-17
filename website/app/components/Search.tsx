@@ -123,10 +123,13 @@ export function Search({
             <X />
           </button>
         </div>
-        <label className="panel-search">
+        <div className="panel-search">
           <SearchIcon size={20} />
-          <span className="sr-only">Search documentation</span>
+          <label className="sr-only" htmlFor={`${id}-input`}>
+            Search documentation
+          </label>
           <input
+            id={`${id}-input`}
             ref={input}
             aria-controls={`${id}-results`}
             autoComplete="off"
@@ -149,7 +152,7 @@ export function Search({
               <X size={16} />
             </button>
           )}
-        </label>
+        </div>
         <div className="search-scopes" role="group" aria-label="Search within">
           {['Everything', 'Guide', 'Reference'].map((kind) => (
             <button
