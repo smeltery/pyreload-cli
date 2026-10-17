@@ -1,29 +1,9 @@
-# Shared Assets
+# Brand assets
 
-This directory contains assets shared across multiple parts of the project (docs, website, README).
+- `logo.svg`: original Pyreload restart-loop mark.
+- `og-image.svg`: editable 1200 × 630 social artwork.
+- `diagrams/`: generated Mermaid SVGs, updated with `bun run diagrams:update`.
+- `og-image.png`: social preview used by the website and README.
 
-## Files
-
-- `og-image.svg` - Open Graph image used for social media previews
-
-## Usage
-
-The assets in this directory are automatically copied to their respective destinations during build:
-
-- **Docs**: Copied to `docs/src/assets/` via `docs/serve.sh` and `.github/workflows/docs.yml`
-- **Website**: Copied to `website/public/` via `npm run copy-assets` (runs before `dev` and `build`)
-- **README**: Referenced via GitHub raw URL
-
-## Modifying Assets
-
-To update an asset:
-
-1. Edit the file in this directory (`assets/`)
-2. The changes will automatically propagate during the next build
-3. For local development:
-   - Docs: Run `./docs/serve.sh` (copies automatically)
-   - Website: Run `npm run dev` in `website/` (copies automatically)
-
-## Why Not Symlinks?
-
-We use build-time copying instead of symlinks to ensure compatibility with all deployment platforms, including those that don't preserve symlinks during build processes.
+Website builds copy these files to `website/public/`. Technology marks belong to
+their respective owners; see the website's brand page for credits.

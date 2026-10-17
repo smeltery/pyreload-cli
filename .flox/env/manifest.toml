@@ -1,0 +1,23 @@
+schema-version = "1.18.0"
+[install]
+python.pkg-path = "python312"
+python.outputs = "all"
+bun.pkg-path = "bun"
+bun.outputs = "all"
+node.pkg-path = "nodejs_22"
+node.outputs = "all"
+uv.pkg-path = "uv"
+uv.outputs = "all"
+actionlint.pkg-path = "actionlint"
+actionlint.outputs = "all"
+[vars]
+NEXT_TELEMETRY_DISABLED = "1"
+[hook]
+on-activate = """
+  export UV_PROJECT_ENVIRONMENT="$FLOX_ENV_PROJECT/.venv"
+  export PATH="$FLOX_ENV_PROJECT/.venv/bin:$PATH"
+"""
+[services.website]
+command = "cd website && bun run dev"
+[options]
+systems = ["aarch64-darwin", "x86_64-darwin", "aarch64-linux", "x86_64-linux"]

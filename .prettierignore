@@ -1,0 +1,17 @@
+node_modules
+website/node_modules
+website/.next
+website/out
+.venv
+docs/.venv
+.website-studio
+.flox
+*.lock
+LICENSE
+assets/*.svg
+website/public
+website/next-env.d.ts
+requirements-dev.lock
+test-results
+playwright-report
+assets/diagrams/

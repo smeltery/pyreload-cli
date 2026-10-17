@@ -1,17 +1,85 @@
 repos:
-  - repo: https://github.com/psf/black
-    rev: 24.10.0
-    hooks:
-      - id: black
-        language_version: python3
-        files: ^(pyreload|tests)/.*\.py$
-
-  - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.8.4
+  - repo: local
     hooks:
       - id: ruff
-        args: [--fix]
-        files: ^(pyreload|tests)/.*\.py$
-
+        name: Python lint
+        entry: ruff check pyreload tests scripts
+        language: system
+        pass_filenames: false
+        types: [python]
       - id: ruff-format
-        files: ^(pyreload|tests)/.*\.py$
+        name: Python format
+        entry: ruff format --check pyreload tests scripts
+        language: system
+        pass_filenames: false
+        types: [python]
+      - id: markdown
+        name: Markdown validation
+        entry: bun run markdown
+        language: system
+        pass_filenames: false
+        types: [markdown]
+      - id: prettier
+        name: Web and documentation format
+        entry: bun run format
+        language: system
+        pass_filenames: false
+      - id: diagrams
+        name: Render Mermaid diagrams
+        entry: bun run diagrams
+        language: system
+        pass_filenames: false
+        types: [markdown]
+      - id: links
+        name: Local documentation links
+        entry: python scripts/check_links.py
+        language: system
+        pass_filenames: false
+        types: [markdown]
+      - id: budgets
+        name: File and directory budgets
+        entry: python scripts/check_budgets.py
+        language: system
+        pass_filenames: false
+      - id: workflows
+        name: GitHub workflow validation
+        entry: actionlint
+        language: system
+        pass_filenames: false
+        files: ^.github/workflows/
+      - id: typecheck
+        name: Website TypeScript
+        entry: bun run --cwd website typecheck
+        language: system
+        pass_filenames: false
+        files: ^website/
+      - id: tests
+        name: Python tests
+        entry: pytest
+        language: system
+        pass_filenames: false
+        stages: [pre-push]
+      - id: website-build
+        name: Production website
+        entry: bun run --cwd website build
+        language: system
+        pass_filenames: false
+        stages: [pre-push]
+      - id: browser-tests
+        name: Browser journeys and accessibility
+        entry: bunx playwright test
+        language: system
+        pass_filenames: false
+        stages: [pre-push]
+      - id: package
+        name: Package build and metadata
+        entry: bash scripts/check-package.sh
+        language: system
+        pass_filenames: false
+        stages: [pre-push]
+      - id: dependency-audit
+        name: Dependency audits
+        entry: bun run audit
+        language: system
+        pass_filenames: false
+        stages: [pre-push]

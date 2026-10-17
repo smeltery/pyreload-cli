@@ -1,76 +1,27 @@
-# Basic Usage
+# Basic usage
 
-Learn the fundamentals of using Pyreload to monitor and restart your Python applications.
+Run Pyreload from the directory you want to watch.
 
-## Running Pyreload
-
-The basic syntax is:
-
-```bash
-pyreload [OPTIONS] SCRIPT [-- SCRIPT_ARGS]
-```
-
-## Common Patterns
-
-### Watch Current Directory
+## Python scripts
 
 ```bash
 pyreload app.py
+pyreload app.py -w 'src/*.py' -w 'config/*.yaml'
+pyreload app.py -i '*__pycache__*' -i '*.log'
 ```
 
-### Watch Specific Directories
+Quote patterns so the shell does not expand them before Pyreload sees them.
+Providing `-w` replaces the default `*.py` pattern.
+
+## Shell commands
 
 ```bash
-pyreload -w src -w config app.py
+pyreload -x 'python -m http.server 8000' -w '*.html'
 ```
 
-### Custom Extensions
+Use [exec mode](../advanced/exec-mode.md) for command arguments, modules, and other runtimes.
 
-```bash
-pyreload -e py -e yaml -e json app.py
-```
+## Output
 
-## Interactive Commands
-
-While Pyreload is running, you can use these commands:
-
-- **`r`** - Manual restart
-- **`q`** - Quit Pyreload
-- **`h`** - Show help
-
-## Configuration File
-
-Instead of command-line options, you can use a config file:
-
-```yaml
-# pyreload.yml
-watch:
-  - src
-  - config
-extensions:
-  - py
-  - yaml
-ignore:
-  - "**/__pycache__/**"
-  - "**/.git/**"
-```
-
-Then run:
-
-```bash
-pyreload -c pyreload.yml app.py
-```
-
-## Environment Variables
-
-Pyreload passes all environment variables to your script:
-
-```bash
-DEBUG=true PORT=8000 pyreload app.py
-```
-
-## Next Steps
-
-- Configure [Watch Patterns](../user-guide/watch-patterns.md)
-- Learn about [Ignore Patterns](../user-guide/ignore-patterns.md)
-- Explore [Advanced Features](../advanced/exec-mode.md)
+Use `--debug` for detected event details or `--clean` to hide Pyreload logs and
+interactive commands. The application's own output remains visible.
