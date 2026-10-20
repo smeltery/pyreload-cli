@@ -1,6 +1,4 @@
-<p align="center"><img src="assets/logo.svg" width="64" height="64" alt="Pyreload logo"></p>
-
-# Pyreload
+# <img src="assets/logo.svg" width="32" height="32" alt="Pyreload logo"> Pyreload
 
 Save your file. Stay in your flow. Pyreload restarts Python applications when
 watched files change, with polling support for Docker, Vagrant, and network mounts.
